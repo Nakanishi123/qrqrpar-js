@@ -1,5 +1,3 @@
-mod utils;
-
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -73,6 +71,26 @@ pub struct QrStyle {
     pub quiet_zone: f64,
 }
 
+#[wasm_bindgen]
+impl QrStyle {
+    #[wasm_bindgen(constructor)]
+    pub fn new(
+        color: String,
+        background_color: String,
+        shape: QrShape,
+        width: u32,
+        quiet_zone: f64,
+    ) -> Self {
+        QrStyle {
+            color,
+            background_color,
+            shape,
+            width,
+            quiet_zone,
+        }
+    }
+}
+
 impl From<QrStyle> for qrqrpar::QrStyle {
     fn from(qrstyle: QrStyle) -> Self {
         qrqrpar::QrStyle {
@@ -82,19 +100,6 @@ impl From<QrStyle> for qrqrpar::QrStyle {
             width: qrstyle.width,
             quiet_zone: qrstyle.quiet_zone,
         }
-    }
-}
-
-#[wasm_bindgen]
-impl QrStyle {
-    #[wasm_bindgen(setter)]
-    pub fn set_color(&mut self, color: String) {
-        self.color = color;
-    }
-
-    #[wasm_bindgen(setter)]
-    pub fn set_background_color(&mut self, background_color: String) {
-        self.background_color = background_color;
     }
 }
 
