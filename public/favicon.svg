@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="40" height="40" viewBox="0 0 11 11">
+    <rect x="0" y="0" width="11" height="11" fill="rgba(0,0,0,0)" />
+    <path fill="#FF00FF" transform="translate(0,0)" fill-rule="evenodd"
+        d="M10 1v-1h1v1ZM7 7h-7v-7h7ZM1 1v5h5v-5ZM2 5v-3h3v3ZM0 8h2v1h-2ZM2 9h1v2h-1ZM9 10v1h-2v-1h-1v-1h1v-1h1v1h2v-3h1v5h-1v-1ZM8 5h2v1h-1v2h-1ZM4 11v-1h2v1ZM11 4h-2v-1h-1v-1h3ZM1 10v1h-1v-1ZM8 0h1v1h-1Z" />
+</svg>
