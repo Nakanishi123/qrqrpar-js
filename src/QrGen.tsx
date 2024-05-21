@@ -131,7 +131,7 @@ function QrGen() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="mt-10 text-4xl">Qr Generator</h1>
+      <h1 className="mt-10 text-4xl">Qr and rMQR Generator</h1>
       <form className="my-2 block w-full p-2.5" onChange={onchange}>
         <div className="mb-2">
           <label className="block text-lg font-medium text-gray-900">
@@ -218,7 +218,7 @@ function QrGen() {
               max={255}
               step="1"
               type="range"
-              className="block h-10 w-full rounded-lg border border-gray-500 bg-gray-50 p-2.5 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              className="block h-10 w-full rounded-lg border border-gray-500 bg-gray-50 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
           <div className="flex-1">
@@ -241,7 +241,7 @@ function QrGen() {
               max={255}
               step="1"
               type="range"
-              className="block h-10 w-full rounded-lg border border-gray-500 bg-gray-50 p-2.5 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              className="block h-10 w-full rounded-lg border border-gray-500 bg-gray-50 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
         </div>
