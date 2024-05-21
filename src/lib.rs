@@ -20,6 +20,25 @@ pub fn make_qr(
 }
 
 #[wasm_bindgen]
+pub fn make_qr_png(
+    text: &str,
+    qrtype: QrType,
+    eclevel: EcLevel,
+    style: QrStyle,
+    strategy: RmqrStrategy,
+) -> Result<Vec<u8>, String> {
+    let qrcode = match qrtype {
+        QrType::Rmqr => qrqrpar::QrCode::rmqr_with_options(text, eclevel.into(), strategy.into()),
+        QrType::Qr => qrqrpar::QrCode::with_error_correction_level(text, eclevel.into()),
+    };
+
+    match qrcode {
+        Ok(qrcode) => Ok(qrcode.to_png(&style.into()).unwrap()),
+        Err(e) => Err(e.to_string()),
+    }
+}
+
+#[wasm_bindgen]
 #[derive(Clone, Copy)]
 pub enum QrType {
     Rmqr,
