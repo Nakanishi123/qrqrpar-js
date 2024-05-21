@@ -6,3 +6,4 @@ pkg/
 wasm-pack.log
 
 .history/
+node_modules
