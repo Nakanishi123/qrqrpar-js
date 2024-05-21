@@ -1,3 +1,3 @@
 # qrqrpar-js
 
-[qrqrpar](https://qrqrpardemo.nakanishi.dev) wasm wrapper
+[qrqrpar](https://github.com/Nakanishi123/qrqrpar) wasm wrapper
