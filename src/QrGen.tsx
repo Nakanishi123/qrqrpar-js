@@ -1,12 +1,13 @@
-import { useRef, useState, useEffect } from "react";
 import init, {
-  make_qr,
-  QrShape,
-  QrType,
   EcLevel,
-  RmqrStrategy,
+  QrShape,
   QrStyle,
-} from "@pompompudding/qrqrpar-js";
+  QrType,
+  RmqrStrategy,
+  make_qr,
+  make_qr_png,
+} from "qrqrpar-js";
+import { useEffect, useRef, useState } from "react";
 
 function QrGen() {
   const messageRef = useRef<HTMLTextAreaElement>(null);
@@ -21,7 +22,7 @@ function QrGen() {
   const [qrUrl, setQrUrl] = useState("");
   const [errorText, setErrorText] = useState("No message");
 
-  const onchange = () => {
+  const getParams = () => {
     const message = messageRef.current?.value;
     const type = typeRef.current?.value;
     const ec = ecRef.current?.value;
@@ -34,26 +35,38 @@ function QrGen() {
 
     if (!type || !ec || !strategy) return;
     if (!shape || !color || !bgColor || !width || !margin) return;
-    if (!message) {
+
+    const style = new QrStyle(
+      color,
+      bgColor,
+      Number(shape),
+      Number(width),
+      Number(margin)
+    );
+    return {
+      text: message,
+      qrtype: Number(type),
+      eclevel: Number(ec),
+      style: style,
+      strategy: Number(strategy),
+    };
+  };
+
+  const onchange = () => {
+    const params = getParams();
+    if (!params) return;
+    if (!params.text) {
       setErrorText("No message");
       setQrUrl("");
       return;
     }
-
     try {
-      const style = new QrStyle(
-        color,
-        bgColor,
-        Number(shape),
-        Number(width),
-        Number(margin)
-      );
       const qr_svg = make_qr(
-        message,
-        Number(type),
-        Number(ec),
-        style,
-        Number(strategy)
+        params.text,
+        params.qrtype,
+        params.eclevel,
+        params.style,
+        params.strategy
       );
       const svg_blob = new Blob([qr_svg], { type: "image/svg+xml" });
       const url = URL.createObjectURL(svg_blob);
@@ -72,6 +85,31 @@ function QrGen() {
     link.href = qrUrl;
     link.download = "qr.svg";
     link.click();
+  };
+
+  const downloadPng = () => {
+    const params = getParams();
+    if (!params) return;
+    if (!params.text) {
+      setErrorText("No message");
+      setQrUrl("");
+      return;
+    }
+    try {
+      const qr_png = make_qr_png(
+        params.text,
+        params.qrtype,
+        params.eclevel,
+        params.style,
+        params.strategy
+      );
+      const png_blob = new Blob([qr_png], { type: "image/png" });
+      const url = URL.createObjectURL(png_blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "qr.png";
+      link.click();
+    } catch (e: any) {}
   };
 
   useEffect(() => {
@@ -204,12 +242,20 @@ function QrGen() {
       ) : (
         <>
           <img src={qrUrl} alt="qr" className="w-full p-2.5" />
-          <button
-            onClick={download}
-            className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
-          >
-            Download
-          </button>
+          <div className="qr flex gap-2">
+            <button
+              onClick={download}
+              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+            >
+              Download SVG
+            </button>
+            <button
+              onClick={downloadPng}
+              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+            >
+              Download PNG
+            </button>
+          </div>
         </>
       )}
     </div>

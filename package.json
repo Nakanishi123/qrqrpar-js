@@ -1,7 +1,7 @@
 {
   "name": "qrqrpar-js",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@pompompudding/qrqrpar-js": "^0.0.2",
+    "@types/react-color": "^3.0.12",
+    "qrqrpar-js": "^0.0.3",
     "react": "^18.2.0",
+    "react-color": "^2.19.3",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
