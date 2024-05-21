@@ -16,11 +16,21 @@ function QrGen() {
   const strategyRef = useRef<HTMLSelectElement>(null);
   const shapeRef = useRef<HTMLSelectElement>(null);
   const colorRef = useRef<HTMLInputElement>(null);
+  const colorAlphaRef = useRef<HTMLInputElement>(null);
   const bgColorRef = useRef<HTMLInputElement>(null);
+  const bgAlphaRef = useRef<HTMLInputElement>(null);
   const widthRef = useRef<HTMLInputElement>(null);
   const marginRef = useRef<HTMLInputElement>(null);
   const [qrUrl, setQrUrl] = useState("");
   const [errorText, setErrorText] = useState("No message");
+
+  const alphat2hex = (alpha: string) => {
+    const hex = Number(alpha).toString(16);
+    if (hex.length < 2) {
+      return "0" + hex;
+    }
+    return hex;
+  };
 
   const getParams = () => {
     const message = messageRef.current?.value;
@@ -29,16 +39,19 @@ function QrGen() {
     const strategy = strategyRef.current?.value;
     const shape = shapeRef.current?.value;
     const color = colorRef.current?.value;
+    const colorAlpha = colorAlphaRef.current?.value;
     const bgColor = bgColorRef.current?.value;
+    const bgAlpha = bgAlphaRef.current?.value;
     const width = widthRef.current?.value;
     const margin = marginRef.current?.value;
 
     if (!type || !ec || !strategy) return;
     if (!shape || !color || !bgColor || !width || !margin) return;
+    if (!colorAlpha || !bgAlpha) return;
 
     const style = new QrStyle(
-      color,
-      bgColor,
+      color + alphat2hex(colorAlpha),
+      bgColor + alphat2hex(bgAlpha),
       Number(shape),
       Number(width),
       Number(margin)
@@ -195,6 +208,18 @@ function QrGen() {
               type="color"
               className="block h-10 w-full rounded-lg border border-gray-500 bg-gray-50 p-2.5 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             />
+            <label className="block text-lg font-medium text-gray-900">
+              Color Alpha
+            </label>
+            <input
+              ref={colorAlphaRef}
+              defaultValue={255}
+              min={0}
+              max={255}
+              step="1"
+              type="range"
+              className="block h-10 w-full rounded-lg border border-gray-500 bg-gray-50 p-2.5 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+            />
           </div>
           <div className="flex-1">
             <label className="block text-lg font-medium text-gray-900">
@@ -206,6 +231,18 @@ function QrGen() {
               type="color"
               className="block h-10 w-full rounded-lg border border-gray-500 bg-gray-50 p-2.5 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             />
+            <label className="block text-lg font-medium text-gray-900">
+              Background color Alpha
+            </label>
+            <input
+              ref={bgAlphaRef}
+              defaultValue={255}
+              min={0}
+              max={255}
+              step="1"
+              type="range"
+              className="block h-10 w-full rounded-lg border border-gray-500 bg-gray-50 p-2.5 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+            />
           </div>
         </div>
         <div className="mb-2 flex flex-row space-x-4">
@@ -215,7 +252,7 @@ function QrGen() {
             </label>
             <input
               ref={widthRef}
-              defaultValue={512}
+              defaultValue={1024}
               min={27}
               type="number"
               className="block h-10 w-full rounded-lg border border-gray-500 bg-gray-50 p-2.5 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500"
@@ -241,8 +278,12 @@ function QrGen() {
         <p className="mb-2 text-xl font-bold text-red-600">{errorText}</p>
       ) : (
         <>
-          <img src={qrUrl} alt="qr" className="w-full p-2.5" />
-          <div className="qr flex gap-2">
+          <img
+            src={qrUrl}
+            alt="qr"
+            className="qr w-full mb-2 border-4 border-blue-500"
+          />
+          <div className="flex gap-2 mb-10">
             <button
               onClick={download}
               className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
@@ -251,7 +292,7 @@ function QrGen() {
             </button>
             <button
               onClick={downloadPng}
-              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+              className="rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-700"
             >
               Download PNG
             </button>
