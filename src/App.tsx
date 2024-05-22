@@ -1,11 +1,13 @@
-import QrGen from "./QrGen";
+import { useEffect } from "react";
 
 function App() {
-  return (
-    <div className="mx-auto max-w-screen-sm">
-      <QrGen />
-    </div>
-  );
+  const redirectUrl = "https://qrqrpardemo.nakanishi.dev/";
+
+  useEffect(() => {
+    window.location.href = redirectUrl;
+  }, []);
+
+  return <div></div>;
 }
 
 export default App;
