@@ -44,7 +44,7 @@ fn get_min_micro(text: &str, eclevel: EcLevel) -> qrqrpar::QrResult<qrqrpar::QrC
     for i in 1..4 {
         let qrcode =
             qrqrpar::QrCode::with_version(text, qrqrpar::Version::Micro(i), eclevel.into());
-        if qrcode.clone().is_ok() {
+        if qrcode.is_ok() {
             return qrcode;
         }
     }
