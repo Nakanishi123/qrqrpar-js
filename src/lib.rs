@@ -10,6 +10,7 @@ pub fn make_qr(
 ) -> Result<String, String> {
     let qrcode = match qrtype {
         QrType::Rmqr => qrqrpar::QrCode::rmqr_with_options(text, eclevel.into(), strategy.into()),
+        QrType::Micro => get_min_micro(text, eclevel),
         QrType::Qr => qrqrpar::QrCode::with_error_correction_level(text, eclevel.into()),
     };
 
@@ -29,6 +30,7 @@ pub fn make_qr_png(
 ) -> Result<Vec<u8>, String> {
     let qrcode = match qrtype {
         QrType::Rmqr => qrqrpar::QrCode::rmqr_with_options(text, eclevel.into(), strategy.into()),
+        QrType::Micro => get_min_micro(text, eclevel),
         QrType::Qr => qrqrpar::QrCode::with_error_correction_level(text, eclevel.into()),
     };
 
@@ -38,10 +40,22 @@ pub fn make_qr_png(
     }
 }
 
+fn get_min_micro(text: &str, eclevel: EcLevel) -> qrqrpar::QrResult<qrqrpar::QrCode> {
+    for i in 1..4 {
+        let qrcode =
+            qrqrpar::QrCode::with_version(text, qrqrpar::Version::Micro(i), eclevel.into());
+        if qrcode.clone().is_ok() {
+            return qrcode;
+        }
+    }
+    qrqrpar::QrCode::with_version(text, qrqrpar::Version::Micro(4), eclevel.into())
+}
+
 #[wasm_bindgen]
 #[derive(Clone, Copy)]
 pub enum QrType {
     Rmqr,
+    Micro,
     Qr,
 }
 
