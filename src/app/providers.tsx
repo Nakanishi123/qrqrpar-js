@@ -1,20 +1,23 @@
 "use client";
 
-import { ChakraProvider, ColorModeScript, extendTheme } from "@chakra-ui/react";
+import {
+  ColorModeScript,
+  ThemeConfig,
+  UIProvider,
+  defaultConfig,
+  extendConfig,
+} from "@yamada-ui/react";
 
-// カスタムテーマを作成
-const theme = extendTheme({
-  config: {
-    initialColorMode: "system",
-    useSystemColorMode: true,
-  },
-});
+export const config: ThemeConfig = {
+  initialColorMode: "system",
+};
+const customConfig = extendConfig(config);
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      {children}
-    </ChakraProvider>
+    <>
+      <ColorModeScript initialColorMode={defaultConfig.initialColorMode} />
+      <UIProvider config={customConfig}>{children}</UIProvider>
+    </>
   );
 }
