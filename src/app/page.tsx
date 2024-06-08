@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <Box as="main" justifyContent="center">
       <Box m="auto" maxW="3xl" justifyContent="center" p={2}>
-        <Flex w="full" m="1em">
+        <Flex m="1em">
           <Box flexGrow={1} textAlign="center" alignContent="center">
             <Link
               href="https://github.com/Nakanishi123/qrqrpar"
